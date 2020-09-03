@@ -1,8 +1,8 @@
 from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.fsm_storage.redis import RedisStorage2
 from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-
 import logging
 
 from modules.common.config import constants
@@ -14,9 +14,9 @@ logging.basicConfig(level=LOG_LEVEL, format=LOG_FORMAT)
 
 storage = RedisStorage2(**constants.redis)
 
-engine = create_engine(constants.DATABASE_URL)
-Session = sessionmaker(bind=engine)
-session = Session()
+db_engine = create_engine(constants.DATABASE_URL)
+Base = declarative_base()
+Session = sessionmaker(bind=db_engine)
 
 
 bot = Bot(token=constants.BOT_TOKEN)
